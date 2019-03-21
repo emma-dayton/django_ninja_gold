@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>Index</title>
+      {% load static %}
+      <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    </head>
+    <body>
+      <div class="container-fluid" style="margin: 25px">
+        <div class="jumbotron" style="margin-right: 25px">
+          <h1>Ninja Gold</h1>
+          <h5>How big will your pot of gold end up?</h5>
+        </div>
+        {% if request.session.lives > 0 %}
+        <h5>Tries left: {{request.session.lives}}</h5>
+        <h4>Current Gold: {{request.session.score}}</h4>
+        <a class="btn btn-outline-danger" href="/reset">Restart?</a>
+        {% endif %}
+        {% if request.session.lives <= 0 %}
+        <h5>Game over. Your final score is: <h5>
+        <h4>{{request.session.score}} pieces of gold</h4>
+        <a class="btn btn-outline-success" href="/reset">Play Again?</a>
+        {% endif %}
+        {% if request.session.lives > 0 %}
+        <div class="row" style="margin-right: 10px; margin-top: 25px;">
+          <div class="col-sm">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem; height: 250px">
+              <div class="card-header">
+                <h3>Farm</h3>
+              </div>
+              <div class="card-body">
+                <form action="/process_money" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="building" value="farm">
+                  <input type="submit" value="Find Gold!">
+                </form>
+                <p>Farming is a sure thing, but the rewards are low</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem; height: 250px">
+              <div class="card-header">
+                <h3>Cave</h3>
+              </div>
+              <div class="card-body">
+                <form action="/process_money" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="building" value="cave">
+                  <input type="submit" value="Find Gold!">
+                </form>
+                <p>There are great treasures in the cave, but the dangers could cost you attempts</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem; height: 250px">
+              <div class="card-header">
+                <h3>House</h3>
+              </div>
+              <div class="card-body">
+                <form action="/process_money" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="building" value="house">
+                  <input type="submit" value="Find Gold!">
+                </form>
+                <p>You never know what you'll find between the couch cushions</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem; height: 250px">
+              <div class="card-header">
+                <h3>Casino</h3>
+              </div>
+              <div class="card-body">
+                <form action="/process_money" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="building" value="casino">
+                  <input type="submit" value="Find Gold!">
+                </form>
+                <p>Try your luck at the casino! You could win big, or you could lose big</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <div class="card bg-light mb-3" style="margin-right: 25px">
+          <div class="card-header">
+            <h3>Activity Log:</h3>
+            <ul class="list-group list-group-flush">
+              {% for activity in request.session.activity %}
+              <li class="list-group-item list-group-item-dark">{{activity}}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
